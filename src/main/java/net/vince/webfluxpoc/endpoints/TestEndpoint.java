@@ -35,11 +35,19 @@ public class TestEndpoint {
     return pluginService.call(plugin);
   }
 
+  @ResponseBody
+  @GetMapping("/call_with_configuration")
+  public Mono<String> callWithConfiguration(@RequestParam String plugin){
+    System.out.print('.');
+    return pluginService.callWithConfiguration(plugin);
+  }
+
   @SneakyThrows
   @ResponseBody
   @GetMapping("/delay")
-  public Mono<String> delay(@RequestParam Long delay){
-    Thread.sleep(delay);
+  public Mono<String> delay(@RequestParam String delay){
+    Thread.sleep(Long.parseLong(delay.replaceAll("\\D", "")));
+    System.out.print('.');
     return Mono.just("DELAYED");
   }
 

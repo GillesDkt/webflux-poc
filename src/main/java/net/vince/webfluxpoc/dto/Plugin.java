@@ -3,6 +3,7 @@ package net.vince.webfluxpoc.dto;
 import io.vavr.control.Option;
 import java.net.http.HttpRequest;
 import javax.annotation.PostConstruct;
+import net.vince.webfluxpoc.domain.Configuration;
 import net.vince.webfluxpoc.services.PluginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,9 @@ public abstract class Plugin {
 
   public String interpret(HttpClientResponse response) {
     return "NO CALL";
+  }
+
+  public Option<HttpRequest> request(Configuration ignored) {
+    return Option.none();
   }
 }

@@ -3,7 +3,6 @@ package net.vince.webfluxpoc.dto.implementations;
 import io.vavr.control.Option;
 import java.net.URI;
 import java.net.http.HttpRequest;
-import lombok.SneakyThrows;
 import net.vince.webfluxpoc.domain.Configuration;
 import net.vince.webfluxpoc.dto.Plugin;
 import org.springframework.http.HttpHeaders;
@@ -11,11 +10,11 @@ import org.springframework.stereotype.Service;
 import reactor.netty.http.client.HttpClientResponse;
 
 @Service
-public class HttpCallPlugin extends Plugin {
+public class HttpTimingOutCallPlugin extends Plugin {
 
   @Override
   public String name() {
-    return "HTTP";
+    return "HTTP_TIMING_OUT";
   }
 
   @Override
