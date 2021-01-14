@@ -1,9 +1,5 @@
 package net.vince.webfluxpoc.services;
 
-import io.vavr.Tuple;
-import io.vavr.Tuple2;
-import io.vavr.control.Option;
-import java.net.http.HttpRequest;
 import java.util.HashMap;
 import java.util.Map;
 import net.vince.webfluxpoc.dto.Plugin;
@@ -26,19 +22,14 @@ public class PluginService {
 
   public Mono<String> call(String pluginName) {
 
-    return Mono.fromSupplier(() -> plugins.get(pluginName))
-               .map(plugin -> Tuple.of(plugin, plugin.request()))
-               .map(pluginWithRequest -> pluginWithRequest.map(this::maybeCall))
-               .flatMap(Tuple2::_2);
-  }
+    final var plugin       = plugins.get(pluginName);
+    final var maybeRequest = plugin.request();
 
-  private Tuple2<Plugin, Mono<String>> maybeCall(final Plugin plugin, final Option<HttpRequest> maybeRequest) {
-    return Tuple.of(plugin,
-                    maybeRequest.map(request -> HttpClient.create()
-                                                          .baseUrl(request.uri().toASCIIString())
-                                                          .get()
-                                                          .response()
-                                                          .map(plugin::interpret))
-                                .getOrElse(Mono.just("NO CALL")));
+    return maybeRequest.map(request -> HttpClient.create()
+                                                 .baseUrl(request.uri().toASCIIString())
+                                                 .get()
+                                                 .response()
+                                                 .map(plugin::interpret))
+                       .getOrElse(Mono.just("NO CALL"));
   }
 }
